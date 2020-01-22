@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#username').keyup(function(){
+                var data = $('#regForm').serialize()
+                $.ajax({
+                    method: "POST",
+                    url: "/username",
+                    data: data
+                })
+                .done(function(res){
+                    $('#usernameMsg').html(res)
+                })
+            })
+            $("#search_bar").keydown(function(){
+                input = this.value
+                $.ajax({
+                    url: "/user_search",
+                    method: "POST",
+                    data: {'search_term': input}
+                }).done(function(response){
+                    $("#search_div").html(response)
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="container jumbotron">
+        <div class="row">
+            <div class="col-6">
+                <h1 class="bg-dark text-white p-3">Registration</h1>
+                <div class="bg-dark text-white p-3">
+                    <form action="/create_user" method="POST" id="regForm">
+                        <div id="usernameMsg"></div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control w-50" name="username" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control w-50" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">Password</label>
+                            <input type="text" class="form-control w-50" name="pass"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="cpass">Confirm Password</label>
+                            <input type="text" class="form-control w-50" name="cpass"></p>
+                        </div>
+                        <input type="submit" value="Register" id="submit_btn">
+                    </form>
+                    <hr>
+                    <form action="/user_search" method="POST" id="search_form">
+                        <div class="form group">
+                            <input type="text" class="form-control w-50" name="search_term" id="search_bar">
+                        </div>
+                        <div id="search_div"></div>      
+                    </form>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}                            
+                            {% for message in messages %}            
+                                <p class="bg-danger text-white text-center p-3">{{message}}</p>                   
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="col-6">
+                <h1 class="bg-dark text-white p-3">Login</h1>
+                <div class="bg-dark text-white p-3">
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control w-50" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">Password</label>
+                            <input type="text" class="form-control w-50" name="pass"></p>
+                        <input type="submit" name="Login">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login & Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+</head>
+<body>
+    <div class="container jumbotron bg-dark">
+        <div class="row">
+            <div class="col-6">
+                <h1 class="bg-primary text-white p-3">Register Now</h1>
+                <div class="bg-primary text-white p-3">
+                    <form action="/create_user" method="POST">
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" class="form-control w-50" name="fname">
+                        </div>
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" class="form-control w-50" name="lname">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control w-50" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">Password</label>
+                            <input type="text" class="form-control w-50" name="pass"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="cpass">Confirm Password</label>
+                            <input type="text" class="form-control w-50" name="cpass"></p>
+                        </div>
+                        <input type="submit" name="Register">
+                    </form>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}                            
+                            {% for message in messages %}            
+                                <p class="bg-danger text-white text-center p-3">{{message}}</p>                   
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="col-6">
+                <h1 class="bg-primary text-white p-3">Login</h1>
+                <div class="bg-primary text-white p-3">
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control w-50" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">Password</label>
+                            <input type="text" class="form-control w-50" name="pass">
+                        </div>
+                        <input type="submit" name="Login">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

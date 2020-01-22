@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container jumbotron bg-dark">
+        <h1 class="bg-primary text-white p-5">All Users</h1>
+        <table class="table table-dark mx-auto">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in all_users %}
+                    <tr>
+                        <td>{{user['first_name']}} {{user['last_name']}}</td>
+                        <td>{{user['email']}}</td>
+                        <td>
+                            {% if user['id'] not in users_to_follow %}
+                            <button class="btn-md bg-primary"><a class="text-white" href="/follow/{{user['id']}}">Follow</a></button>
+                            {% else %}
+                            <button class="btn-md bg-primary"><a class="text-white" href="/unfollow/{{user['id']}}">Unfollow</a></button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button><a class="text-dark d-inline-block" href="/success">Dashboard</a></button>
+    </div>
+</body>
+</html>

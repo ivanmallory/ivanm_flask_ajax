@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tweet-Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container jumbotron">
+        <div class="row">
+            <div class="col">
+                <h1 class="bg-primary p-3 text-white">Tweet Details:</h1>
+                <p>Tweet Content: {{tweet['content']}}</p>
+                <p>Tweet Author: {{tweet.author.first_name}}  {{tweet.author.last_name}}</p>
+                <p>Users who have liked this tweet:</p>
+                <table class="table bg-dark text-white">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in user_who_have_liked %}
+                            <tr>
+                                <td>{{user.first_name}}</td>
+                                <td>{{user.last_name}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="btn btn-dark"><a class="text-white" href="/success">Dashboard</a></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

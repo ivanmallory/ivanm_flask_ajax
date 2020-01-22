@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Tweet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}                            
+            {% for message in messages %}            
+                <p class="bg-danger text-white text-center p-3">{{message}}</p>                   
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Edit Tweet</h1>
+                <form action="/update_tweet/{{tweet_data['id']}}" method="POST">
+                    <textarea class="form-control w-50" name="tweet" placeholder="Your Tweet Here">{{tweet_data['content']}}</textarea>
+                    <input type="submit" value="Edit">
+                    <button><a href="/success">Cancel</a></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

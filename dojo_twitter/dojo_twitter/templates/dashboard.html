@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container jumbotron bg-dark text-white">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}                            
+                {% for message in messages %}            
+                    <p class="bg-danger text-white text-center p-3">{{message}}</p>                   
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="row">
+            <h3 class="bg-primary col-md p-3 ml-2">Dojo Tweets</h3>
+            <p class="text-center p-3">Welcome {{user_data['first_name']}} {{user_data['last_name']}}</p>
+            <button class="btn-lg bg-primary"><a class="text-white" href="/logout">Home</a></button>
+            <button class="btn-lg bg-primary"><a class="text-white" href="/users">Follow Users</a></button>
+        </div>
+        <div class="row">
+            <div class="col p-3">
+                <h1>Write a Tweet:</h1>
+                <form action="/tweets/create" method="POST" id="tweet_form">
+                    <textarea class="form-control w-50" name="tweet" placeholder="Your Tweet Here"></textarea>
+                    <input class="mt-3" type="submit" value="Post">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>Your Feed:</h1>
+                
+                <hr> 
+                <div class="tweet_body">
+                    {% for tweet in tweet_data %}
+                        <p>{{tweet['content']}}</p>
+                        <p>Written By: {{tweet.author.first_name}}  {{tweet.author.last_name}}</p>
+                        {% if tweet['time_since_secs'] %}
+                        <p>{{tweet['time_since_secs']}} seconds</p>
+                        {% elif tweet['time_since_minutes'] %}
+                        <p>{{tweet['time_since_minutes']}} minutes</p>
+                        {% elif tweet['time_since_hours'] %}
+                        <p>{{tweet['time_since_hours']}} hours</p>
+                        {% elif tweet['time_since_days'] %}
+                        <p>{{tweet['time_since_days']}} days</p>
+                        {% endif %}                          
+                        <p>Tweet has been liked: {{tweet['like_count']}} times.</p>
+                        {% if tweet in liked_tweet_ids %}
+                        <p><a href="/unlike_tweet/{{tweet['id']}}"><button>Unlike</button></a></p>
+                        {% else %}
+                        <p><a href="/like_tweet/{{tweet['id']}}"><button>Like</button></a></p>
+                        {% endif %}
+                        {% if tweet['author_id'] == session['user_id'] %}
+                        <p><a href="/delete_tweet/{{tweet['id']}}"><button>Delete</button></a></p>
+                        <p><a href="/edit_tweet/{{tweet['id']}}"><button>Edit</button></a></p>
+                        {% endif %}
+                        <p><a href="/tweet_details/{{tweet['id']}}"><button>Details</button></a></p>
+                    {% endfor %}
+                </div>         
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function(){
+        $("#tweet_form").submit(function(){
+            $.ajax({
+                url: "/tweets/create", 
+                method: "POST",
+                data: $("#tweet_form").serialize()  
+            })
+            .done(function(response){
+                $(".tweet_body").append(response)
+            })
+            return false
+        })
+
+        function rebuildTweetBody(){
+            $.ajax({
+                url: "/success_v2", 
+                method: "GET",
+            })
+            .done(function(response){
+                $(".tweet_body").html(response)
+            })
+        }
+        
+        setInterval(rebuildTweetBody, 500)
+    })
+</script>
